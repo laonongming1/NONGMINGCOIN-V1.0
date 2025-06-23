@@ -3,240 +3,171 @@
 <head>
   <meta charset="UTF-8">
   <title>农民币挖矿 - Nongmingcoin Miner</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="images/nongmingcoin-logo.png">
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.6.2/dist/ethers.umd.min.js"></script>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0;
-    }
-
-    .staking-box {
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-      padding: 30px 20px;
-      margin: 40px auto;
-      max-width: 800px;
-      text-align: center;
-    }
-
-    .staking-box h2 {
-      margin-top: 0;
-      font-size: 22px;
-      color: #333;
-    }
-
-    .info {
-      font-size: 15px;
-      color: #666;
-      margin: 6px 0;
-    }
-
-    button {
-      margin: 10px 8px;
-      padding: 12px 24px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #3d9970;
-      color: white;
-      transition: all 0.3s ease;
-    }
-
-    button:hover:not(:disabled) {
-      background-color: #2e7d58;
-      transform: translateY(-1px);
-    }
-
-    button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-
-    #status, #status2 {
-      margin-top: 16px;
-      font-weight: bold;
-      font-size: 15px;
-      color: #222;
-    }
-
-    a {
-      color: #3d9970;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-      button {
-        display: block;
-        width: 100%;
-        margin: 10px 0;
-      }
-
-      .staking-box {
-        margin: 20px 16px;
-        padding: 20px 12px;
-      }
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-<header class="site-header">
-  <div class="banner-overlay">
-    <h1 class="shouyedingbu1">农民币 · 挖矿入口</h1>
-    <h2 class="shouyedingbu2">每小时产币，每10%减半，完全去中心化</h2>
-    <p class="shouyedingbu3">返回首页：<a href="index.html">社区信息展示页</a></p>
-  </div>
-   <nav class="nav-bar">
+  <header class="site-header">
+    <div class="banner-overlay">
+      <h1 class="shouyedingbu1">农民币 · 挖矿入口</h1>
+      <h2 class="shouyedingbu2">每小时产币，每10%减半，完全去中心化</h2>
+      <p class="shouyedingbu3">返回首页：<a href="index.html">农民币官网</a></p>
+    </div>
+    <nav class="nav-bar">
       <ul>
-        <li><a href="index.html" class="active">首页</a></li>
+        <li><a href="index.html">首页</a></li>
         <li><a href="about.html">关于项目</a></li>
         <li><a href="faq.html">常见问题</a></li>
         <li><a href="contact.html">联系我们</a></li>
-        <li><a href="KONGTOUXINXI.html">挖矿页面</a></li>
+        <li><a href="KONGTOUXINXI.html">空投信息</a></li>
         <li><a href="BUYNFT.html">NFT信息</a></li>
         <li><a href="XIANGMUDONGTAI.html">项目动态</a></li>
         <li><a href="whitepaper.html">项目白皮书</a></li>
       </ul>
     </nav>
-</header>
+  </header>
 
-<main class="main-content">
-  <div class="staking-box">
-    <h2>🎖️ 团队矿池</h2>
-    <p class="info">每小时领取，质押后将自动开始计时。</p>
-    <button id="connectTeam">🔌 连接钱包</button>
-    <button id="approveTeam" disabled>🔓 授权 NFT</button>
-    <button id="stakeTeam" disabled>📅 质押 NFT</button>
-    <button id="claimTeam" disabled>⛏️ 提取收益</button>
-    <button id="unstakeTeam" disabled>📤 取消质押</button>
-    <p id="status">请先连接钱包</p>
-    <p class="info">质押时间：<span id="stakeTime">--</span></p>
-    <p class="info">当前产出速率：<span id="rate">--</span> NM / 小时 / 每张</p>
-  </div>
+  <main class="main-content">
+    <section>
+      <h2>团队矿池</h2>
+      <p>连接钱包后可查看质押状态并开始产出农民币。</p>
+      <button onclick="connectWallet('team')">连接钱包</button>
+      <p id="walletAddress_team">尚未连接</p>
+      <p id="nftCount_team">持有 NFT 数量：-</p>
+      <p id="isStaking_team">质押状态：-</p>
+      <p id="pendingReward_team">可领取农民币：-</p>
+      <p id="currentRate_team">当前产出速率：-</p>
+      <br>
+      <button onclick="approveNFT('team')">授权 NFT</button>
+      <button onclick="stake('team')">质押NFT</button>
+      <button onclick="claim('team')">领取收益</button>
+      <button onclick="unstake('team')">解除质押</button>
+    </section>
+    <hr>
+    <section>
+      <h2>社区矿池</h2>
+      <p>连接钱包后可查看质押状态并开始产出农民币。</p>
+      <button onclick="connectWallet('community')">连接钱包</button>
+      <p id="walletAddress_community">尚未连接</p>
+      <p id="nftCount_community">持有 NFT 数量：-</p>
+      <p id="isStaking_community">质押状态：-</p>
+      <p id="pendingReward_community">可领取农民币：-</p>
+      <p id="currentRate_community">当前产出速率：-</p>
+      <br>
+      <button onclick="approveNFT('community')">授权 NFT</button>
+      <button onclick="stake('community')">质押NFT</button>
+      <button onclick="claim('community')">领取收益</button>
+      <button onclick="unstake('community')">解除质押</button>
+    </section>
+  </main>
 
-  <div class="staking-box">
-    <h2>🌾 社区矿池</h2>
-    <p class="info">每小时领取，质押后将自动开始计时。</p>
-    <button id="connectCommunity">🔌 连接钱包</button>
-    <button id="approveCommunity" disabled>🔓 授权 NFT</button>
-    <button id="stakeCommunity" disabled>📅 质押 NFT</button>
-    <button id="claimCommunity" disabled>⛏️ 提取收益</button>
-    <button id="unstakeCommunity" disabled>📤 取消质押</button>
-    <p id="status2">请先连接钱包</p>
-    <p class="info">质押时间：<span id="stakeTime2">--</span></p>
-    <p class="info">当前产出速率：<span id="rate2">--</span> NM / 小时 / 每张</p>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <p>© 2025 ｜ <a href="https://nongmingcoin.com" target="_blank">NONGMINGCOIN.COM</a></p>
-</footer>
+  <footer class="site-footer">
+    <p>© 2025 ｜ <a href="https://nongmingcoin.com" target="_blank">NONGMINGCOIN.COM</a></p>
+  </footer>
 
 <script>
-  const TEAM_POOL = "0xa99bA9b45991D34bDbe0606D1D86B0229444bB16";
-  const COMMUNITY_POOL = "0x4a7AacFe662d8314E0D885B30AE42D04C1960579";
-  const TEAM_NFT = "0xBB91925dafA50E91C8aD1416B5c452F9b156EF73";
-  const COMMUNITY_NFT = "0x1f09E222fb8F81c6D41415822a63C9C4Ef448dcF";
-
-  const STAKING_ABI = [
-    "function stake() public",
-    "function claim() public",
-    "function unstake() public",
-    "function lastClaim(address) view returns (uint256)",
-    "function getCurrentRate() public view returns (uint256)"
-  ];
-  const NFT_ABI = [
-    "function isApprovedForAll(address owner, address operator) view returns (bool)",
-    "function setApprovalForAll(address operator, bool approved)"
-  ];
-
-  async function setup(pool, nft, connectBtnId, approveBtnId, stakeBtnId, claimBtnId, unstakeBtnId, statusId, timeId, rateId) {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    const signer = await provider.getSigner();
-    const address = await signer.getAddress();
-
-    const staking = new ethers.Contract(pool, STAKING_ABI, signer);
-    const nftContract = new ethers.Contract(nft, NFT_ABI, signer);
-
-    document.getElementById(statusId).textContent = `✅ 钱包已连接：${address.slice(0, 6)}...${address.slice(-4)}`;
-
-    const approveBtn = document.getElementById(approveBtnId);
-    const stakeBtn = document.getElementById(stakeBtnId);
-    const claimBtn = document.getElementById(claimBtnId);
-    const unstakeBtn = document.getElementById(unstakeBtnId);
-
-    const approved = await nftContract.isApprovedForAll(address, pool);
-    if (!approved) {
-      approveBtn.disabled = false;
-      approveBtn.onclick = async () => {
-        const tx = await nftContract.setApprovalForAll(pool, true);
-        await tx.wait();
-        approveBtn.disabled = true;
-        stakeBtn.disabled = false;
-      };
-    } else {
-      stakeBtn.disabled = false;
-    }
-
-    stakeBtn.onclick = async () => {
-      try {
-        const tx = await staking.stake();
-        await tx.wait();
-        document.getElementById(statusId).textContent = "✅ 成功质押！";
-        updateStatus();
-      } catch (e) {
-        document.getElementById(statusId).textContent = "❌ 质押失败: " + (e.message || e.reason);
-      }
-    };
-
-    claimBtn.disabled = false;
-    claimBtn.onclick = async () => {
-      const tx = await staking.claim();
-      await tx.wait();
-      document.getElementById(statusId).textContent = "✅ 已领取收益";
-    };
-
-    unstakeBtn.disabled = false;
-    unstakeBtn.onclick = async () => {
-      const tx = await staking.unstake();
-      await tx.wait();
-      document.getElementById(statusId).textContent = "✅ 已取消质押";
-    };
-
-    async function updateStatus() {
-      try {
-        const ts = await staking.lastClaim(address);
-        const rate = await staking.getCurrentRate();
-        document.getElementById(timeId).textContent = new Date(Number(ts) * 1000).toLocaleString();
-        document.getElementById(rateId).textContent = ethers.utils.formatEther(rate);
-      } catch (e) {
-        document.getElementById(rateId).textContent = "读取失败";
-        document.getElementById(timeId).textContent = "读取失败";
-      }
-    }
-
-    updateStatus();
-    setInterval(updateStatus, 60000);
+const CONFIG = {
+  team: {
+    pool: "0xa99bA9b45991D34bDbe0606D1D86B0229444bB16",
+    nft: "0xBB91925dafA50E91C8aD1416B5c452F9b156EF73"
+  },
+  community: {
+    pool: "0x4a7AacFe662d8314E0D885B30AE42D04C1960579",
+    nft: "0x1f09E222fb8F81c6D41415822a63C9C4Ef448dcF"
   }
+};
 
-  document.getElementById("connectTeam").onclick = () => {
-    setup(TEAM_POOL, TEAM_NFT, "connectTeam", "approveTeam", "stakeTeam", "claimTeam", "unstakeTeam", "status", "stakeTime", "rate");
-  };
+let provider, signer, userAddress;
+const poolABI = [
+  "function stake() external",
+  "function claim() public",
+  "function unstake() external",
+  "function getPendingReward(address user) external view returns (uint256)",
+  "function getCurrentRate() public view returns (uint256)",
+  "function stakes(address user) external view returns (uint256,uint256,uint256,bool)"
+];
 
-  document.getElementById("connectCommunity").onclick = () => {
-    setup(COMMUNITY_POOL, COMMUNITY_NFT, "connectCommunity", "approveCommunity", "stakeCommunity", "claimCommunity", "unstakeCommunity", "status2", "stakeTime2", "rate2");
-  };
+const nftABI = [
+  "function balanceOf(address account, uint256 id) external view returns (uint256)",
+  "function setApprovalForAll(address operator, bool approved) external",
+  "function isApprovedForAll(address owner, address operator) external view returns (bool)"
+];
+
+async function connectWallet(poolType) {
+  if (!window.ethereum) return alert("请安装 MetaMask");
+  provider = new ethers.providers.Web3Provider(window.ethereum);
+  await provider.send("eth_requestAccounts", []);
+  signer = provider.getSigner();
+  userAddress = await signer.getAddress();
+  document.getElementById(`walletAddress_${poolType}`).textContent = `当前地址：${userAddress}`;
+  updateInfo(poolType);
+}
+
+async function updateInfo(poolType) {
+  try {
+    const pool = new ethers.Contract(CONFIG[poolType].pool, poolABI, signer);
+    const nft = new ethers.Contract(CONFIG[poolType].nft, nftABI, signer);
+    const count = await nft.balanceOf(userAddress, 1);
+    const stake = await pool.stakes(userAddress);
+    const pending = await pool.getPendingReward(userAddress);
+    const rate = await pool.getCurrentRate();
+
+    document.getElementById(`nftCount_${poolType}`).textContent = `持有 NFT 数量：${count}`;
+    document.getElementById(`isStaking_${poolType}`).textContent = `质押状态：${stake[3] ? "已质押" : "未质押"}`;
+    document.getElementById(`pendingReward_${poolType}`).textContent = `可领取农民币：${ethers.utils.formatEther(pending)} NM`;
+    document.getElementById(`currentRate_${poolType}`).textContent = `当前产出速率：${ethers.utils.formatEther(rate)} NM / 小时 / 每张NFT`;
+  } catch (err) {
+    console.error("更新信息失败：", err);
+  }
+}
+
+async function approveNFT(poolType) {
+  try {
+    const nft = new ethers.Contract(CONFIG[poolType].nft, nftABI, signer);
+    const tx = await nft.setApprovalForAll(CONFIG[poolType].pool, true);
+    await tx.wait();
+    alert("✅ 授权成功！");
+  } catch (err) {
+    alert("❌ 授权失败：" + (err.reason || err.message));
+  }
+}
+
+async function stake(poolType) {
+  try {
+    const pool = new ethers.Contract(CONFIG[poolType].pool, poolABI, signer);
+    const tx = await pool.stake({ gasLimit: 300000 });
+    await tx.wait();
+    alert("✅ 质押成功！");
+    updateInfo(poolType);
+  } catch (err) {
+    alert("❌ 质押失败：" + (err.reason || err.message));
+  }
+}
+
+async function claim(poolType) {
+  try {
+    const pool = new ethers.Contract(CONFIG[poolType].pool, poolABI, signer);
+    const tx = await pool.claim({ gasLimit: 200000 });
+    await tx.wait();
+    alert("✅ 领取成功！");
+    updateInfo(poolType);
+  } catch (err) {
+    alert("❌ 提取失败：" + (err.reason || err.message));
+  }
+}
+
+async function unstake(poolType) {
+  try {
+    const pool = new ethers.Contract(CONFIG[poolType].pool, poolABI, signer);
+    const tx = await pool.unstake({ gasLimit: 300000 });
+    await tx.wait();
+    alert("✅ 成功解除质押！");
+    updateInfo(poolType);
+  } catch (err) {
+    alert("❌ 解除质押失败：" + (err.reason || err.message));
+  }
+}
 </script>
 </body>
 </html>

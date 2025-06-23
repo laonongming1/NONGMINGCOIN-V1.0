@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>关于项目 - 农民币 Nongmingcoin</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/nongmingcoin-logo.png">
+</head>
+<body>
+  <header class="site-header">
+    <div class="banner-overlay">
+      <h1 class="shouyedingbu1">农民币 · 关于项目</h1>
+      <h2 class="shouyedingbu2">一粒种子，种下希望</h2>
+      <p class="shouyedingbu3">
+        返回首页：<a href="index.html">社区信息展示页</a>
+      </p>
+    </div>
+    <nav class="nav-bar">
+      <ul>
+        <li><a href="index.html" class="active">首页</a></li>
+        <li><a href="about.html">关于项目</a></li>
+        <li><a href="faq.html">常见问题</a></li>
+        <li><a href="contact.html">联系我们</a></li>
+        <li><a href="KONGTOUXINXI.html">挖矿页面</a></li>
+        <li><a href="BUYNFT.html">NFT信息</a></li>
+        <li><a href="XIANGMUDONGTAI.html">项目动态</a></li>
+        <li><a href="whitepaper.html">项目白皮书</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <section>
+      <h2>关于农民币项目</h2>
+      <p>农民币（$NM）是一个由社区自主发起的实验性加密代币项目，旨在探索去中心化世界中的公平参与、透明建设与长期主义。</p>
+      <p>该项目不依赖外部资金、没有 VC、没有空洞的承诺，也不打算快速“起飞”。我们关注的是建设过程，而非价格数字。</p>
+      <p>团队规模非常小，仅由 2-3 人负责，包括设计、网站开发、NFT 制作、频道维护、用户对接等工作，几乎每一步都由手工完成。</p>
+      <p>我们希望农民币能够成为一种象征：象征着普通人也能亲手播种一个系统，亲自搭建一块生态，并在长期的耐心中看到收获。</p>
+      <p>项目本身没有商业义务，也不构成任何金融产品或服务；所有人参与时请以兴趣出发，自主判断，不以投资为导向。</p>
+      <p>如果你认同建设、热爱实验、乐于探索一种不同的社区生态，那么农民币欢迎你的加入。</p>
+    </section>
+
+    <section>
+      <h2>官方地址信息</h2>
+      <p>✅ <strong>$NM 代币地址：</strong><br>
+        <a href="https://etherscan.io/address/0x7cd04a5132fAa672314aCA0d063c90C0EA3747d4" target="_blank">
+          0x7cd04a5132fAa672314aCA0d063c90C0EA3747d4</a></p>
+
+      <p>✅ <strong>团队 NFT 合约地址：</strong><br>
+        <a href="https://etherscan.io/address/0xBB91925dafA50E91C8aD1416B5c452F9b156EF73" target="_blank">
+          0xBB91925dafA50E91C8aD1416B5c452F9b156EF73</a></p>
+
+      <p>✅ <strong>社区 NFT 合约地址：</strong><br>
+        <a href="https://etherscan.io/address/0x1f09E222fb8F81c6D41415822a63C9C4Ef448dcF" target="_blank">
+          0x1f09E222fb8F81c6D41415822a63C9C4Ef448dcF</a></p>
+
+      <p>✅ <strong>NFT 购买合约地址：</strong><br>
+        <a href="https://etherscan.io/address/0xd91e0803bF7146EED1c31B29f98e45832c569D7B" target="_blank">
+          0xd91e0803bF7146EED1c31B29f98e45832c569D7B</a></p>
+
+      <p>✅ <strong>团队矿池合约地址：</strong><br>
+        <a href="https://etherscan.io/address/0xa99bA9b45991D34bDbe0606D1D86B0229444bB16" target="_blank">
+          0xa99bA9b45991D34bDbe0606D1D86B0229444bB16</a></p>
+
+      <p>✅ <strong>社区矿池合约地址：</strong><br>
+        <a href="https://etherscan.io/address/0x4a7AacFe662d8314E0D885B30AE42D04C1960579" target="_blank">
+          0x4a7AacFe662d8314E0D885B30AE42D04C1960579</a></p>
+    </section>
+
+    <section>
+      <h2>当前持币状况</h2>
+      <p>农民币（$NM）当前总量为 900 万枚，其中一部分已通过挖矿产出至社区用户，其余仍托管于合约矿池中。</p>
+      <canvas id="holdingChart" width="300" height="300"></canvas>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 ｜ <a href="https://nongmingcoin.com" target="_blank">NONGMINGCOIN.COM</a></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const communityPercent = 0.0;
+    const miningPoolPercent = 100 - communityPercent;
+
+    const ctx = document.getElementById('holdingChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['社区持有', '矿池托管'],
+        datasets: [{
+          label: '持币比例',
+          data: [communityPercent, miningPoolPercent],
+          backgroundColor: ['#76C7C0', '#F5A623'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: {
+            display: true,
+            text: '农民币（$NM）当前持币结构'
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

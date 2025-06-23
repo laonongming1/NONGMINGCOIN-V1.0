@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>NFT信息 - 农民币 Nongmingcoin</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/nongmingcoin-logo.png">
+  <style>
+    .buy-section {
+      display: flex;
+      justify-content: center;
+      margin: 40px auto;
+    }
+    .buy-box {
+      background: #fefefe;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      padding: 30px 40px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid #e6e6e6;
+    }
+    .buy-box h2 {
+      font-size: 26px;
+      margin-bottom: 12px;
+    }
+    .buy-info, .contract-hint {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .contract-hint a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    .contract-hint a:hover {
+      text-decoration: underline;
+    }
+    .wallet-buttons button {
+      margin: 10px 8px;
+      padding: 12px 22px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    #connectWallet {
+      background-color: #4CAF50;
+      color: white;
+    }
+    #connectWallet:hover {
+      background-color: #45a049;
+    }
+    #buyNFT {
+      background-color: #2196F3;
+      color: white;
+    }
+    #buyNFT:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+    .status-msg {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333;
+      min-height: 24px;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="banner-overlay">
+      <h1 class="shouyedingbu1">农民币 · NFT信息</h1>
+      <h2 class="shouyedingbu2">官方NFT艺术纪念系列</h2>
+      <p class="shouyedingbu3">
+        返回首页：<a href="index.html">社区信息展示页</a>
+      </p>
+    </div>
+    <nav class="nav-bar">
+      <ul>
+        <li><a href="index.html" class="active">首页</a></li>
+        <li><a href="about.html">关于项目</a></li>
+        <li><a href="faq.html">常见问题</a></li>
+        <li><a href="contact.html">联系我们</a></li>
+        <li><a href="KONGTOUXINXI.html">挖矿页面</a></li>
+        <li><a href="BUYNFT.html">NFT信息</a></li>
+        <li><a href="XIANGMUDONGTAI.html">项目动态</a></li>
+        <li><a href="whitepaper.html">项目白皮书</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <section>
+      <h2>什么是农民币 NFT？</h2>
+      <p>
+        农民币 NFT 是社区推出的 <strong>链上纪念藏品</strong>，图像为项目官方的农民币 LOGO，象征去中心化、草根力量与长期主义精神。
+      </p>
+      <p>
+        全系列共 <strong>66,000 枚</strong>，其中 <strong>63,000 枚</strong>面向市场公开销售，<strong>3,000 枚</strong>为团队专属 NFT，绑定项目开发者与长期维护者，<strong>不参与销售</strong>，但与普通 NFT 拥有完全相同的挖矿规则。
+      </p>
+      <p>
+        每一枚 NFT 均可用于链上 <strong>质押挖矿</strong>，成为唯一产出农民币（$NM）的入口。系统逻辑已完全锁定，<strong>不依赖中心化前端</strong>，用户可直接调用智能合约，无需信任任何人。
+      </p>
+      <p>
+        没有后台，没有特殊权限，没有动态参数——<strong>这就是农民币 NFT</strong>：透明、恒定、去中心化。
+      </p>
+    </section>
+
+    <section class="buy-section">
+      <div class="buy-box">
+        <h2>🛒 购买农民币 NFT</h2>
+        <p class="buy-info">价格：<strong>5 USDC</strong> ｜ 每次限购 1 枚</p>
+        <p class="contract-hint">合约地址：<a href="https://etherscan.io/address/0xd91e0803bF7146EED1c31B29f98e45832c569D7B" target="_blank">查看合约</a></p>
+
+        <div class="wallet-buttons">
+          <button id="connectWallet">🔌 连接钱包</button>
+          <button id="buyNFT" disabled>🛒 立即购买</button>
+        </div>
+        <p id="status" class="status-msg">请先连接钱包</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.6.2/dist/ethers.umd.min.js"></script>
+  <script>
+    const USDC_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+    const BUY_CONTRACT = "0xd91e0803bF7146EED1c31B29f98e45832c569D7B";
+    const ABI = ["function buy() public"];
+    const USDC_ABI = [
+      "function allowance(address owner, address spender) view returns (uint256)",
+      "function approve(address spender, uint256 amount) returns (bool)"
+    ];
+
+    let provider, signer, address;
+    const buyBtn = document.getElementById("buyNFT");
+    const statusEl = document.getElementById("status");
+
+    async function connectWallet() {
+      try {
+        const eth = window.ethereum?.providers?.[0] || window.ethereum;
+        if (!eth) return statusEl.textContent = "❌ 未检测到钱包插件";
+
+        provider = new ethers.BrowserProvider(eth);
+        await provider.send("eth_requestAccounts", []);
+        signer = await provider.getSigner();
+        address = await signer.getAddress();
+
+        statusEl.textContent = `✅ 已连接：${address.slice(0,6)}...${address.slice(-4)}`;
+        buyBtn.disabled = false;
+      } catch (err) {
+        statusEl.textContent = "❌ 钱包连接失败：" + (err.message || err.reason);
+      }
+    }
+
+    async function buyNFT() {
+      try {
+        const usdc = new ethers.Contract(USDC_ADDRESS, USDC_ABI, signer);
+        const allowance = await usdc.allowance(address, BUY_CONTRACT);
+        const required = 5 * 1e6;
+
+        if (allowance < required) {
+          statusEl.textContent = "⏳ 正在授权 USDC...";
+          const tx = await usdc.approve(BUY_CONTRACT, ethers.MaxUint256);
+          await tx.wait();
+          statusEl.textContent = "✅ 授权完成，准备购买 NFT...";
+        } else {
+          statusEl.textContent = "✅ 已授权，准备购买...";
+        }
+
+        const contract = new ethers.Contract(BUY_CONTRACT, ABI, signer);
+        const tx2 = await contract.buy();
+        statusEl.textContent = "⏳ 交易进行中...";
+        await tx2.wait();
+        statusEl.textContent = "✅ NFT 购买成功，感谢支持！";
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "❌ 出错：" + (err.data?.message || err.reason || err.message);
+      }
+    }
+
+    document.getElementById("connectWallet").addEventListener("click", connectWallet);
+    buyBtn.addEventListener("click", buyNFT);
+  </script>
+
+  <footer class="site-footer">
+    <p>© 2025 ｜ <a href="https://nongmingcoin.com" target="_blank">NONGMINGCOIN.COM</a></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,335 @@
+/* 页面基础样式 */
+body {
+  margin: 0;
+  font-family: "Helvetica", "Arial", sans-serif;
+  background-color: #e9eef3;
+  color: #333;
+}
+
+/* 修正所有链接颜色统一，禁止 visited 变紫 */
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: #000; /* 默认黑色，必要时改为白色 */
+  text-decoration: none;
+}
+
+/* 顶部区域（含背景图） */
+.site-header {
+  background-image: url('images/beijing.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  text-align: center;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 首页主标题阴影效果 */
+.shouyedingbu1 {
+  font-size: 32px;
+  margin: 10px 0 5px 0;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.shouyedingbu2 {
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 顶部频道横幅样式 */
+.shouyedingbu3 {
+  margin-top: 12px;
+  font-size: 15px;
+  color: black;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.shouyedingbu3 a:link,
+.shouyedingbu3 a:visited,
+.shouyedingbu3 a:hover,
+.shouyedingbu3 a:active {
+  color: black;
+  text-decoration: none;
+}
+
+/* 导航栏 */
+.nav-bar {
+  background-color: #002244;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.nav-bar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nav-bar li {
+  margin: 0 15px;
+}
+
+.nav-bar a:link,
+.nav-bar a:visited,
+.nav-bar a:hover,
+.nav-bar a:active {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+/* 鼠标悬停时颜色 */
+.nav-bar a:hover {
+  color: #00ccff;
+}
+
+/* 当前页面高亮 */
+.nav-bar a.active {
+  color: #ffdd55;
+}
+
+/* 主内容区域 */
+.main-content {
+  max-width: 880px;
+  margin: 30px auto;
+  padding: 30px;
+}
+
+/* 内容区块样式及 hover 动效 */
+.main-content section {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  margin-bottom: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main-content section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 标题样式 */
+.main-content h2 {
+  color: #003366;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  margin-top: 0;
+}
+
+/* 列表样式 */
+.main-content ul {
+  padding-left: 20px;
+}
+
+.main-content li {
+  margin-bottom: 10px;
+}
+
+/* 页脚样式 */
+.site-footer {
+  background-color: #003366;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+}
+
+.site-footer a:link,
+.site-footer a:visited,
+.site-footer a:hover,
+.site-footer a:active {
+  color: white;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #cccccc;
+}
+
+/* 时间轴样式 */
+.timeline {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.timeline li {
+  border-left: 3px solid #999;
+  margin-left: 1em;
+  padding-left: 1em;
+  margin-bottom: 1em;
+  font-size: 1.05em;
+  line-height: 1.6;
+}
+
+/* NFT 展示区整体排版 */
+.nft-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 每个 NFT 卡片 */
+.nft-item {
+  width: 200px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  overflow: hidden;
+  padding: 10px;
+  transition: transform 0.2s;
+}
+
+.nft-item:hover {
+  transform: scale(1.05);
+}
+
+/* NFT 图片大小控制 */
+.nft-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* NFT 名字 */
+.nft-item h3 {
+  font-size: 16px;
+  margin: 8px 0 4px;
+}
+
+/* 合约地址和按钮 */
+.nft-item p {
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.nft-item a:link,
+.nft-item a:visited,
+.nft-item a:hover,
+.nft-item a:active {
+  color: #1a73e8;
+  text-decoration: none;
+  word-break: break-all;
+}
+/* 空投记录表格样式 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+table thead {
+  background-color: #f2f2f2;
+}
+
+table th,
+table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+table th {
+  background-color: #003366;
+  color: white;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+  background-color: #eef4ff;
+}
+/* ===================== 白皮书专属样式 ===================== */
+.whitepaper {
+  font-size: 17px;
+  line-height: 1.85;
+  color: #222;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 白皮书标题（一级标题） */
+.whitepaper h1 {
+  font-size: 28px;
+  color: #003366;
+  border-bottom: 2px solid #003366;
+  padding-bottom: 8px;
+  margin-bottom: 25px;
+}
+
+/* 白皮书子标题（例如：一、二、三...） */
+.whitepaper h2 {
+  font-size: 22px;
+  color: #003366;
+  border-left: 4px solid #003366;
+  padding-left: 10px;
+  margin-top: 40px;
+  margin-bottom: 15px;
+}
+
+/* 小标题 */
+.whitepaper h3 {
+  font-size: 18px;
+  margin-top: 25px;
+  color: #444;
+}
+
+/* 白皮书正文段落 */
+.whitepaper p {
+  margin: 16px 0;
+  text-indent: 2em;
+}
+
+/* 白皮书列表（FAQ 用到） */
+.whitepaper ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.whitepaper li {
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+
+/* FAQ 问题标题 */
+.whitepaper .faq-question {
+  font-weight: bold;
+  color: #002244;
+  margin-top: 20px;
+}
+
+/* FAQ 回答段落 */
+.whitepaper .faq-answer {
+  margin-left: 1em;
+  text-indent: 0;
+  margin-bottom: 16px;
+}

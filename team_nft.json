@@ -1,0 +1,27 @@
+{
+  "name": "Nongming Coin - Team NFT",
+  "description": "这是农民币项目方专属NFT，代表早期建设者的贡献与身份，具有真实挖矿权，可永久参与农民币产出。",
+  "image": "ipfs://bafkreic2m6aikfh7if5zmocnomkfuuukgdqmdzuiarosmeztehwdfwga24",
+  "attributes": [
+    {
+      "trait_type": "类型",
+      "value": "团队NFT"
+    },
+    {
+      "trait_type": "项目",
+      "value": "农民币"
+    },
+    {
+      "trait_type": "发行时间",
+      "value": "2025年"
+    },
+    {
+      "trait_type": "身份特征",
+      "value": "早期贡献者"
+    },
+    {
+      "trait_type": "挖矿机制",
+      "value": "绑定并质押后永久产出"
+    }
+  ]
+}

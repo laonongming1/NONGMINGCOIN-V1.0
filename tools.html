@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>实用工具 - 农民币 Nongmingcoin </title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/nongmingcoin-logo.png">
+</head>
+<body>
+  <header class="site-header">
+    <div class="banner-overlay">
+      <h1 class="shouyedingbu1">农民币 · 实用工具</h1>
+      <h2 class="shouyedingbu2">完全去中心化的开源免费工具</h2>
+      <p class="shouyedingbu3">
+        返回首页：<a href="index.html">社区信息展示页</a>
+        </p>
+        </div>
+        <nav class="nav-bar">
+        <ul>
+        <li><a href="index.html">首页</a></li>
+        <li><a href="about.html">关于项目</a></li>
+        <li><a href="faq.html">常见问题</a></li>
+        <li><a href="contact.html">联系我们</a></li>
+        <li><a href="KONGTOUXINXI.html">挖矿页面</a></li>
+        <li><a href="BUYNFT.html">NFT信息</a></li>
+        <li><a href="XIANGMUDONGTAI.html">项目动态</a></li>
+        <li><a href="whitepaper.html">项目白皮书</a></li>
+        <li><a href="XIANGMUHEZUO.html">项目合作</a></li>
+        <li><a href="tools.html" class="active">实用工具</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main-content">
+    <section>
+    <h2>实用工具是什么？</h2>
+    <p>本页面是完全免费开源的工具页面</p>
+    <p>包括但不限于:</p>
+    <p>完全去中心化的ETH代币铸造</p>
+    <p>完全去中心化的NFT铸造（仍在开发中，请勿点击，点了也没用）</p>
+    <p>功能依旧在开发中,我们的所有的功能，合约部署代码，完全开源。</p>
+    <p>如果你有任何想要的实用工具，请联系我们</p>
+    </section>
+     <section>
+    <h2>NFT铸造工具</h2>
+      <label for="NFTname">名称：</label><br>
+      <input type="text" id="NFTname" placeholder="请输入NFT名称"><br><br>
+      <label for="NFTdesc">简介：</label><br>
+      <input type="text" id="NFTdesc" placeholder="请输入NFT简介"><br><br>
+      <label for="NFTtags">标签:</label><br>
+      <input type="text" id="NFTtags" placeholder="请输入NFT标签"><br><br>
+      <label for="NFTreceiver">接收地址:</label><br>
+      <input type="text" id="NFTreceiver" placeholder="请输入接收地址"><br><br>
+      <label for="NFTnumber">数量:</label><br>
+      <input type="number" id="NFTnumber" placeholder="请输入铸造数量"><br><br>
+      <label for="NFTimages">上传图片:</label><br>
+      <input type="file" id="NFTimages" accept="image/*"><br><br>
+      <button onclick="startMint()">上传并铸造你的NFT</button>
+      <button onclick="connectWalletNFT()">连接钱包</button>
+      <p id="walletStatusNFT" style="display:none;">钱包未连接</p>
+      </section>
+      <section>
+      <h2>代币铸造工具</h2>
+      <label for="coinName">代币名称:</label><br>
+      <input type="text" id="coinName" placeholder="请输入代币名称"><br><br>
+      <label for="coinSymbol">代币简称：</label><br>
+      <input type="text" id="coinSymbol" placeholder="请输入代币简称"><br><br>
+      <label for="coinDecimals">小数位数：</label><br>
+      <input type="number" id="coinDecimals" value="18" min="0" max="18"><br><br>
+      <label for="coinNumbre">代币数量:</label><br>
+      <input type="number" id="coinNumbre" placeholder="请输入代币数量"><br><br>
+      <label for="coinReceiver">接收地址：</label><br>
+      <input type="text" id="coinReceiver" placeholder="请输入接收地址"><br><br>
+      <button type="button" onclick="startTokenMint(event)">上传并铸造你的代币</button>
+      <button onclick="connectWalletToken()">连接钱包</button>
+      <p id="walletStatusToken" style="display:none;">钱包未连接</p>
+      </section>
+     </main>
+  <footer class="site-footer">
+    <p>© 2025 ｜ <a href="https://nongmingcoin.com" target="_blank">NONGMINGCOIN.COM</a></p>
+  </footer>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script>
+  // 钱包交互 //
+let currentAccountNFT = null;
+let currentAccountToken = null;
+
+async function connectWalletNFT() {
+  if (!window.ethereum) {
+    alert("❌ 未检测到钱包，请先安装 MetaMask 或使用支持的钱包浏览器");
+    return;
+  }
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    currentAccountNFT = accounts[0];
+    const statusBox = document.getElementById("walletStatusNFT");
+    statusBox.style.display = "block";
+    statusBox.innerText = "✅ 钱包地址：" + currentAccountNFT;
+  } catch (err) {
+    alert("❌ 钱包连接失败：" + err.message);
+  }
+}
+
+async function connectWalletToken() {
+  if (!window.ethereum) {
+    alert("❌ 未检测到钱包，请先安装 MetaMask 或使用支持的钱包浏览器"); 
+    return;
+  }
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    currentAccountToken = accounts[0];
+    const statusBox = document.getElementById("walletStatusToken");
+    statusBox.style.display = "block";
+    statusBox.innerText = "✅ 钱包地址：" + currentAccountToken;
+  } catch (err) {
+    alert("❌钱包连接失败：" + err.message);
+  }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script>
+async function startTokenMint(event) {
+  event.preventDefault();
+  if (!window.ethereum || !currentAccountToken) {
+    alert("请先连接钱包");
+    return;
+  }
+  const name = document.getElementById("coinName").value.trim();
+  const symbol = document.getElementById("coinSymbol").value.trim();
+  const decimals = parseInt(document.getElementById("coinDecimals").value);
+  const supply = document.getElementById("coinNumbre").value.trim();
+  const receiver = document.getElementById("coinReceiver").value.trim();
+  if (!/^0x[a-fA-F0-9]{40}$/.test(receiver)) {
+    alert("⚠️ 接收地址格式不正确");
+    return;
+  }
+  try {
+    const totalSupply = ethers.utils.parseUnits(supply, decimals);
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contractABI =
+    [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_symbol",
+				"type": "string"
+			},
+			{
+				"internalType": "uint8",
+				"name": "_decimals",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_supply",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_receiver",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "allowance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
+    const bytecode = "0x608060405234801561000f575f5ffd5b5060405161145138038061145183398181016040528101906100319190610336565b845f908161003f91906105ec565b50836001908161004f91906105ec565b508260025f6101000a81548160ff021916908360ff1602179055508160038190555060035460045f8373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20819055508073ffffffffffffffffffffffffffffffffffffffff165f73ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef60035460405161011491906106ca565b60405180910390a350505050506106e3565b5f604051905090565b5f5ffd5b5f5ffd5b5f5ffd5b5f5ffd5b5f601f19601f8301169050919050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52604160045260245ffd5b6101858261013f565b810181811067ffffffffffffffff821117156101a4576101a361014f565b5b80604052505050565b5f6101b6610126565b90506101c2828261017c565b919050565b5f67ffffffffffffffff8211156101e1576101e061014f565b5b6101ea8261013f565b9050602081019050919050565b8281835e5f83830152505050565b5f610217610212846101c7565b6101ad565b9050828152602081018484840111156102335761023261013b565b5b61023e8482856101f7565b509392505050565b5f82601f83011261025a57610259610137565b5b815161026a848260208601610205565b91505092915050565b5f60ff82169050919050565b61028881610273565b8114610292575f5ffd5b50565b5f815190506102a38161027f565b92915050565b5f819050919050565b6102bb816102a9565b81146102c5575f5ffd5b50565b5f815190506102d6816102b2565b92915050565b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f610305826102dc565b9050919050565b610315816102fb565b811461031f575f5ffd5b50565b5f815190506103308161030c565b92915050565b5f5f5f5f5f60a0868803121561034f5761034e61012f565b5b5f86015167ffffffffffffffff81111561036c5761036b610133565b5b61037888828901610246565b955050602086015167ffffffffffffffff81111561039957610398610133565b5b6103a588828901610246565b94505060406103b688828901610295565b93505060606103c7888289016102c8565b92505060806103d888828901610322565b9150509295509295909350565b5f81519050919050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52602260045260245ffd5b5f600282049050600182168061043357607f821691505b602082108103610446576104456103ef565b5b50919050565b5f819050815f5260205f209050919050565b5f6020601f8301049050919050565b5f82821b905092915050565b5f600883026104a87fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8261046d565b6104b2868361046d565b95508019841693508086168417925050509392505050565b5f819050919050565b5f6104ed6104e86104e3846102a9565b6104ca565b6102a9565b9050919050565b5f819050919050565b610506836104d3565b61051a610512826104f4565b848454610479565b825550505050565b5f5f905090565b610531610522565b61053c8184846104fd565b505050565b5b8181101561055f576105545f82610529565b600181019050610542565b5050565b601f8211156105a4576105758161044c565b61057e8461045e565b8101602085101561058d578190505b6105a16105998561045e565b830182610541565b50505b505050565b5f82821c905092915050565b5f6105c45f19846008026105a9565b1980831691505092915050565b5f6105dc83836105b5565b9150826002028217905092915050565b6105f5826103e5565b67ffffffffffffffff81111561060e5761060d61014f565b5b610618825461041c565b610623828285610563565b5f60209050601f831160018114610654575f8415610642578287015190505b61064c85826105d1565b8655506106b3565b601f1984166106628661044c565b5f5b8281101561068957848901518255600182019150602085019450602081019050610664565b868310156106a657848901516106a2601f8916826105b5565b8355505b6001600288020188555050505b505050505050565b6106c4816102a9565b82525050565b5f6020820190506106dd5f8301846106bb565b92915050565b610d61806106f05f395ff3fe608060405234801561000f575f5ffd5b5060043610610091575f3560e01c8063313ce56711610064578063313ce5671461013157806370a082311461014f57806395d89b411461017f578063a9059cbb1461019d578063dd62ed3e146101cd57610091565b806306fdde0314610095578063095ea7b3146100b357806318160ddd146100e357806323b872dd14610101575b5f5ffd5b61009d6101fd565b6040516100aa9190610934565b60405180910390f35b6100cd60048036038101906100c891906109e5565b610288565b6040516100da9190610a3d565b60405180910390f35b6100eb610375565b6040516100f89190610a65565b60405180910390f35b61011b60048036038101906101169190610a7e565b61037b565b6040516101289190610a3d565b60405180910390f35b61013961065b565b6040516101469190610ae9565b60405180910390f35b61016960048036038101906101649190610b02565b61066d565b6040516101769190610a65565b60405180910390f35b610187610682565b6040516101949190610934565b60405180910390f35b6101b760048036038101906101b291906109e5565b61070e565b6040516101c49190610a3d565b60405180910390f35b6101e760048036038101906101e29190610b2d565b6108a4565b6040516101f49190610a65565b60405180910390f35b5f805461020990610b98565b80601f016020809104026020016040519081016040528092919081815260200182805461023590610b98565b80156102805780601f1061025757610100808354040283529160200191610280565b820191905f5260205f20905b81548152906001019060200180831161026357829003601f168201915b505050505081565b5f8160055f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20819055508273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925846040516103639190610a65565b60405180910390a36001905092915050565b60035481565b5f8160045f8673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205410156103fc576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016103f390610c12565b60405180910390fd5b8160055f8673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205410156104b7576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016104ae90610c7a565b60405180910390fd5b8160045f8673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546105039190610cc5565b925050819055508160045f8573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546105569190610cf8565b925050819055508160055f8673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546105e49190610cc5565b925050819055508273ffffffffffffffffffffffffffffffffffffffff168473ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef846040516106489190610a65565b60405180910390a3600190509392505050565b60025f9054906101000a900460ff1681565b6004602052805f5260405f205f915090505481565b6001805461068f90610b98565b80601f01602080910402602001604051908101604052809291908181526020018280546106bb90610b98565b80156107065780601f106106dd57610100808354040283529160200191610706565b820191905f5260205f20905b8154815290600101906020018083116106e957829003601f168201915b505050505081565b5f8160045f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f2054101561078f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161078690610c12565b60405180910390fd5b8160045f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546107db9190610cc5565b925050819055508160045f8573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f82825461082e9190610cf8565b925050819055508273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef846040516108929190610a65565b60405180910390a36001905092915050565b6005602052815f5260405f20602052805f5260405f205f91509150505481565b5f81519050919050565b5f82825260208201905092915050565b8281835e5f83830152505050565b5f601f19601f8301169050919050565b5f610906826108c4565b61091081856108ce565b93506109208185602086016108de565b610929816108ec565b840191505092915050565b5f6020820190508181035f83015261094c81846108fc565b905092915050565b5f5ffd5b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f61098182610958565b9050919050565b61099181610977565b811461099b575f5ffd5b50565b5f813590506109ac81610988565b92915050565b5f819050919050565b6109c4816109b2565b81146109ce575f5ffd5b50565b5f813590506109df816109bb565b92915050565b5f5f604083850312156109fb576109fa610954565b5b5f610a088582860161099e565b9250506020610a19858286016109d1565b9150509250929050565b5f8115159050919050565b610a3781610a23565b82525050565b5f602082019050610a505f830184610a2e565b92915050565b610a5f816109b2565b82525050565b5f602082019050610a785f830184610a56565b92915050565b5f5f5f60608486031215610a9557610a94610954565b5b5f610aa28682870161099e565b9350506020610ab38682870161099e565b9250506040610ac4868287016109d1565b9150509250925092565b5f60ff82169050919050565b610ae381610ace565b82525050565b5f602082019050610afc5f830184610ada565b92915050565b5f60208284031215610b1757610b16610954565b5b5f610b248482850161099e565b91505092915050565b5f5f60408385031215610b4357610b42610954565b5b5f610b508582860161099e565b9250506020610b618582860161099e565b9150509250929050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52602260045260245ffd5b5f6002820490506001821680610baf57607f821691505b602082108103610bc257610bc1610b6b565b5b50919050565b7f496e73756666696369656e742062616c616e63650000000000000000000000005f82015250565b5f610bfc6014836108ce565b9150610c0782610bc8565b602082019050919050565b5f6020820190508181035f830152610c2981610bf0565b9050919050565b7f4e6f7420617070726f76656400000000000000000000000000000000000000005f82015250565b5f610c64600c836108ce565b9150610c6f82610c30565b602082019050919050565b5f6020820190508181035f830152610c9181610c58565b9050919050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601160045260245ffd5b5f610ccf826109b2565b9150610cda836109b2565b9250828203905081811115610cf257610cf1610c98565b5b92915050565b5f610d02826109b2565b9150610d0d836109b2565b9250828201905080821115610d2557610d24610c98565b5b9291505056fea2646970667358221220c4297dc742e71367d0025dad9bb018cb5afcae7fca692bbddeb7cbbfdf2df4c364736f6c634300081e0033"; 
+    const factory = new ethers.ContractFactory(contractABI, bytecode, signer);
+    let networkGasPrice = await provider.getGasPrice();
+    let maxGasPrice = ethers.utils.parseUnits("5", "gwei");
+    let gasPrice = networkGasPrice.gt(maxGasPrice) ? maxGasPrice : networkGasPrice;
+    let gasEstimate = await factory.signer.estimateGas(
+      factory.getDeployTransaction(name, symbol, decimals, totalSupply, receiver)
+    );
+    let gasLimit = gasEstimate.mul(110).div(100);
+    if (gasLimit.gt(ethers.BigNumber.from("1100000"))) gasLimit = ethers.BigNumber.from("1100000");
+    const contract = await factory.deploy(
+      name,
+      symbol,
+      decimals,
+      totalSupply,
+      receiver,
+      {
+        gasLimit: gasLimit,
+        gasPrice: gasPrice
+      }
+    );
+    alert("📨 已提交部署交易，等待上链...");
+    await contract.deployed();
+    alert("✅ 部署成功，合约地址：" + contract.address);
+    console.log("部署成功：", contract.address);
+  } catch (err) {
+    console.error("部署失败：", err);
+    alert("❌ 部署失败：" + (err.message || err));
+  }
+}
+</script>

@@ -180,90 +180,6 @@ a:active {
   line-height: 1.6;
 }
 
-/* NFT 展示区整体排版 */
-.nft-gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  padding: 20px;
-}
-
-/* 每个 NFT 卡片 */
-.nft-item {
-  width: 200px;
-  background: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  overflow: hidden;
-  padding: 10px;
-  transition: transform 0.2s;
-}
-
-.nft-item:hover {
-  transform: scale(1.05);
-}
-
-/* NFT 图片大小控制 */
-.nft-item img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-/* NFT 名字 */
-.nft-item h3 {
-  font-size: 16px;
-  margin: 8px 0 4px;
-}
-
-/* 合约地址和按钮 */
-.nft-item p {
-  font-size: 14px;
-  margin: 4px 0;
-}
-
-.nft-item a:link,
-.nft-item a:visited,
-.nft-item a:hover,
-.nft-item a:active {
-  color: #1a73e8;
-  text-decoration: none;
-  word-break: break-all;
-}
-/* 空投记录表格样式 */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  font-size: 15px;
-}
-
-table thead {
-  background-color: #f2f2f2;
-}
-
-table th,
-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
-}
-
-table th {
-  background-color: #003366;
-  color: white;
-}
-
-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-table tbody tr:hover {
-  background-color: #eef4ff;
-}
 /* ===================== 白皮书专属样式 ===================== */
 .whitepaper {
   font-size: 17px;
@@ -333,3 +249,52 @@ table tbody tr:hover {
   text-indent: 0;
   margin-bottom: 16px;
 }
+/* ================= 通用表单样式补充 ================= */
+
+.main-content input[type="text"],
+.main-content input[type="number"],
+.main-content input[type="file"],
+.main-content textarea {
+  width: 100%;
+  padding: 6px 10px;          /* 原 8px，改得稍紧凑一点 */
+  font-size: 15px;
+  margin-bottom: 8px;         /* 原 10px，减少 input 之间的垂直间距 */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.main-content label {
+  display: block;
+  font-weight: bold;
+  color: #003366;
+  margin: 6px 0 2px;          /* 原 10px 0 4px，调低间隔 */
+}
+
+.main-content button {
+  padding: 8px 18px;          /* 稍微小一点，按钮更精致 */
+  font-size: 15px;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 16px;           /* 控制 button 和最后一行之间的空隙 */
+}
+
+.main-content button:hover {
+  background-color: #005599;
+}
+.main-content section + section {
+  margin-top: 10px; /* 两个 section 之间的距离缩小 */
+}
+
+.main-content section h2 {
+  margin-top: 0;      /* 避免 h2 再拉开距离 */
+  margin-bottom: 12px;
+}
+

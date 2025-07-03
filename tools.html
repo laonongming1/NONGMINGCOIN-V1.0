@@ -13,10 +13,10 @@
       <h2 class="shouyedingbu2">完全去中心化的开源免费工具</h2>
       <p class="shouyedingbu3">
         返回首页：<a href="index.html">社区信息展示页</a>
-        </p>
-        </div>
-        <nav class="nav-bar">
-        <ul>
+      </p>
+    </div>
+    <nav class="nav-bar">
+      <ul>
         <li><a href="index.html">首页</a></li>
         <li><a href="about.html">关于项目</a></li>
         <li><a href="faq.html">常见问题</a></li>
@@ -30,35 +30,56 @@
       </ul>
     </nav>
   </header>
-  <main class="main-content">
+  <main class="main-content" style="min-height: calc(100vh - 200px);">
     <section>
-    <h2>实用工具是什么？</h2>
-    <p>本页面是完全免费开源的工具页面</p>
-    <p>包括但不限于:</p>
-    <p>完全去中心化的ETH代币铸造</p>
-    <p>完全去中心化的NFT铸造（仍在开发中，请勿点击，点了也没用）</p>
-    <p>功能依旧在开发中,我们的所有的功能，合约部署代码，完全开源。</p>
-    <p>如果你有任何想要的实用工具，请联系我们</p>
+      <h2>实用工具是什么？</h2>
+      <p>本页面是完全免费开源的工具页面</p>
+      <p>包括但不限于:</p>
+      <p>完全去中心化的ETH代币铸造</p>
+      <p>完全去中心化的链上信息上传系统（请一定要认真的阅读使用说明书！！！）</p>
+      <p>功能依旧在开发中，我们的所有功能、合约部署代码完全开源。</p>
+      <p>如果你有任何想要的实用工具，请联系我们。</p>
     </section>
-     <section>
-    <h2>NFT铸造工具</h2>
+    <section>
+      <h2>实用工具的使用说明</h2>
+      <p>这是链上信息上传系统的说明，请认真阅读本使用说明书。</p>
+      <p>我们的链上信息上传系统，是通过将你上传的任意文件，先用 pako 工具压缩，再转为 16 进制代码，最终上传到归档馆合约，实现真正的链上永久存储。</p>
+      <p>请务必对上传操作保持高度谨慎。你只需先点击“压缩文件”，然后点击“部署归档合约”，并支付一笔较高的手续费（目前实测 5000 多字节约 30 美元），即可将文件内容铸造进链。</p>
+      <p>NFT 功能可有可无。因为本系统已将所有信息直接铸造进链上，所以每一次部署都是不可逆、永久保存，成本很高，请务必慎重。</p>
+      <p>所有上传信息都可以被任何人链上查询，并通过 16 进制解码还原为真实内容。</p>
+      <p>示例合约：0xd5d034A25b34A80f62D1d86c9011440B1B2d9eb8 |</p>
+    </section>
+    <section>
+      <h2>链上信息上传工具</h2>
       <label for="NFTname">名称：</label><br>
       <input type="text" id="NFTname" placeholder="请输入NFT名称"><br><br>
       <label for="NFTdesc">简介：</label><br>
       <input type="text" id="NFTdesc" placeholder="请输入NFT简介"><br><br>
+      <label for="NFTsymbol">简称：</label><br>
+      <input type="text" id="NFTsymbol" placeholder="请输入NFT简称"><br><br>
       <label for="NFTtags">标签:</label><br>
       <input type="text" id="NFTtags" placeholder="请输入NFT标签"><br><br>
       <label for="NFTreceiver">接收地址:</label><br>
       <input type="text" id="NFTreceiver" placeholder="请输入接收地址"><br><br>
       <label for="NFTnumber">数量:</label><br>
       <input type="number" id="NFTnumber" placeholder="请输入铸造数量"><br><br>
-      <label for="NFTimages">上传图片:</label><br>
-      <input type="file" id="NFTimages" accept="image/*"><br><br>
-      <button onclick="startMint()">上传并铸造你的NFT</button>
+      <label for="NFTURL">归档馆指针（合约地址 + 归档ID）：</label><br>
+      <input type="text" id="NFTURL" placeholder="格式: 0xABC...123|42，例如 合约地址|归档ID"><br>
+      <small style="color:orange;">
+        请填写 <b>归档馆合约地址</b> 和 <b>归档编号</b>，用“<code>|</code>”隔开，如：<br>
+        <code>0xd5d034A25b34A80f62D1d86c9011440B1B2d9eb8|3</code>
+      </small><br><br>
+      <label for="NFTfile">上传文件（最多5MB）:</label><br>
+      <input type="file" id="NFTfile" onchange="validateFileSize()"><br><br>
+      <button type="button" onclick="startMint(event)">上传并铸造你的NFT</button>
       <button onclick="connectWalletNFT()">连接钱包</button>
       <p id="walletStatusNFT" style="display:none;">钱包未连接</p>
-      </section>
-      <section>
+      <button type="button" onclick="compressAndPreview()">压缩文件并分块预览</button>
+      <p id="compressResult"></p> 
+      <button type="button" onclick="handleDeployArchive()">部署归档合约</button>
+      <p id="deployResult"></p>
+    </section>
+    <section>
       <h2>代币铸造工具</h2>
       <label for="coinName">代币名称:</label><br>
       <input type="text" id="coinName" placeholder="请输入代币名称"><br><br>
@@ -73,21 +94,21 @@
       <button type="button" onclick="startTokenMint(event)">上传并铸造你的代币</button>
       <button onclick="connectWalletToken()">连接钱包</button>
       <p id="walletStatusToken" style="display:none;">钱包未连接</p>
-      </section>
-      <section>
-    <h2>赞助我们</h2>
-    <p>如果你认可农民币的理念和技术实践，欢迎通过以下方式支持我们：</p>
-     <li>
-      以太坊地址：<br>
-      <span style="font-weight:bold;word-break:break-all;">0x6B46E77eC6d70712d1E0C8e180a1f44775AF4b52</span>
-      <button onclick="navigator.clipboard.writeText('0x6B46E77eC6d70712d1E0C8e180a1f44775AF4b52')">复制地址</button>
-      </li>
-      <li>
-      也可通过 <a href="https://nongmingcoin.com" target="_blank">nongmingcoin.com</a> 或 Telegram/Twitter 联系我们
-      </li>
+    </section>
+    <section>
+      <h2>赞助我们</h2>
+      <p>如果你认可农民币的理念和技术实践，欢迎通过以下方式支持我们：</p>
+      <p>
+        以太坊地址：<br>
+        <span style="font-weight:bold;word-break:break-all;">0x6B46E77eC6d70712d1E0C8e180a1f44775AF4b52</span>
+        <button onclick="navigator.clipboard.writeText('0x6B46E77eC6d70712d1E0C8e180a1f44775AF4b52')">复制地址</button>
+      </p>
+      <p>
+        也可通过 <a href="https://nongmingcoin.com" target="_blank">nongmingcoin.com</a> 或 Telegram/Twitter 联系我们。
+      </p>
       <p><b>感谢您的支持！</b></p>
     </section>
-     </main>
+  </main>
   <footer class="site-footer">
     <p>© 2025 ｜ <a href="https://nongmingcoin.com" target="_blank">NONGMINGCOIN.COM</a></p>
   </footer>
@@ -98,7 +119,6 @@
   // 钱包交互 //
 let currentAccountNFT = null;
 let currentAccountToken = null;
-
 async function connectWalletNFT() {
   if (!window.ethereum) {
     alert("❌ 未检测到钱包，请先安装 MetaMask 或使用支持的钱包浏览器");
@@ -114,7 +134,6 @@ async function connectWalletNFT() {
     alert("❌ 钱包连接失败：" + err.message);
   }
 }
-
 async function connectWalletToken() {
   if (!window.ethereum) {
     alert("❌ 未检测到钱包，请先安装 MetaMask 或使用支持的钱包浏览器"); 
@@ -436,6 +455,231 @@ async function startTokenMint(event) {
   } catch (err) {
     console.error("部署失败：", err);
     alert("❌ 部署失败：" + (err.message || err));
+  }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script>
+const MAX_CHUNK_SIZE = 24576; 
+async function compressFileInput(inputId) {
+  const fileInput = document.getElementById(inputId);
+  if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+    throw new Error("请选择要压缩的文件");
+  }
+  const file = fileInput.files[0];
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error("文件超过5MB，请重新选择更小的文件");
+  }
+  const arrayBuffer = await file.arrayBuffer();
+  const uint8Array = new Uint8Array(arrayBuffer);
+  const compressed = pako.gzip(uint8Array);
+  if (!compressed || !compressed.length) {
+    throw new Error("❌ 压缩后数据为空！");
+  }
+  return compressed;
+}
+function splitUint8Array(u8arr, chunkSize = MAX_CHUNK_SIZE) {
+  if (!u8arr || !u8arr.length) throw new Error("❌ 无分块数据");
+  const chunks = [];
+  for (let i = 0; i < u8arr.length; i += chunkSize) {
+    chunks.push(u8arr.slice(i, i + chunkSize));
+  }
+  return chunks;
+}
+async function compressAndSplit(inputId = "NFTfile", chunkSize = MAX_CHUNK_SIZE) {
+  const compressed = await compressFileInput(inputId);
+  const chunks = splitUint8Array(compressed, chunkSize);
+  return {
+    compressed,
+    chunks,
+    chunkSize,
+    totalChunks: chunks.length,
+    compressedSize: compressed.length,
+  };
+}
+async function compressAndPreview() {
+  const resultBox = document.getElementById("compressResult");
+  resultBox.innerHTML = "⏳ 正在压缩和分块，请稍候...";
+  try {
+    const { compressed, compressedSize, totalChunks, chunkSize, chunks } = await compressAndSplit("NFTfile", MAX_CHUNK_SIZE);
+    window.chunks = chunks;
+    window.fileHash = ethers.utils.keccak256(compressed);
+    let debugStr = '';
+    chunks.forEach((c, i) => debugStr += `分块${i+1}: ${c.length} 字节<br>`);
+    resultBox.innerHTML = `✅ 压缩完成<br>
+      压缩后大小：<b>${compressedSize}</b> 字节<br>
+      分块数量：<b>${totalChunks}</b> 块<br>
+      每块最大：<b>${chunkSize}</b> 字节<br>
+      文件哈希：<code>${window.fileHash}</code><br>
+      ${debugStr}`;
+  } catch (err) {
+    resultBox.innerHTML = "❌ 错误：" + (err.message || err);
+    console.error(err);
+  }
+}
+</script>
+<script>
+async function handleDeployArchive() {
+  const resultBox = document.getElementById("deployResult");
+  if (!window.chunks || !window.fileHash) {
+    resultBox.innerHTML = "❌ 请先完成文件压缩与分块";
+    alert("请先上传并压缩文件！");
+    return;
+  }
+  await deployArchiveContract(window.chunks, window.fileHash);
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script>
+const ARCHIVE_HALL_ADDRESS = "0xd5d034A25b34A80f62D1d86c9011440B1B2d9eb8";
+const ARCHIVE_HALL_ABI = [
+  "function createArchive(uint256, bytes32) external returns (uint256)",
+  "function uploadChunk(uint256, uint256, bytes) external",
+  "function nextId() external view returns (uint256)",
+  "event ArchiveCreated(uint256 indexed id, address indexed creator, uint256 totalChunks, bytes32 fileHash)"
+];
+function splitUint8Array(u8arr, chunkSize = MAX_CHUNK_SIZE) {
+  const chunks = [];
+  for (let i = 0; i < u8arr.length; i += chunkSize) {
+    chunks.push(u8arr.slice(i, i + chunkSize));
+  }
+  return chunks;
+}
+function toBytes(chunk) {
+  if (ethers.utils.isHexString(chunk)) return ethers.utils.arrayify(chunk);
+  if (chunk instanceof Uint8Array) return chunk;
+  return new Uint8Array(chunk);
+}
+async function deployArchiveContract(chunks, fileHashHex) {
+  const resultBox = document.getElementById("deployResult");
+  if (!window.ethereum) {
+    resultBox.innerHTML = "❌ 未检测到钱包，请先安装 MetaMask 或兼容钱包";
+    alert("❌ 未检测到钱包，请先安装 MetaMask 或使用支持的钱包浏览器");
+    return;
+  }
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(ARCHIVE_HALL_ADDRESS, ARCHIVE_HALL_ABI, signer);
+    const totalChunks = chunks.length;
+    let totalBytes = 0;
+    let chunkSummary = chunks.map((c, i) => {
+      totalBytes += c.length;
+      return `块${i+1}: ${c.length} 字节`;
+    }).join(' | ');
+    resultBox.innerHTML = `分块数量: <b>${totalChunks}</b> | 总字节: <b>${totalBytes}</b><br>${chunkSummary}<br><br>`;
+    let createGas = "未知";
+    try {
+      createGas = await contract.estimateGas.createArchive(totalChunks, fileHashHex);
+      resultBox.innerHTML += `创建归档 预估Gas: <b>${createGas.toString()}</b><br>`;
+    } catch (e) {
+      resultBox.innerHTML += `⚠️ 归档创建gas预估失败: ${e.message}<br>`;
+    }
+    const tx = await contract.createArchive(totalChunks, fileHashHex);
+    const receipt = await tx.wait();
+    let archiveId = null;
+    for (const e of receipt.events || []) {
+      if ((e.event || "").toLowerCase() === "archivecreated" && e.args && e.args.id !== undefined) {
+        archiveId = ethers.BigNumber.from(e.args.id).toString();
+        break;
+      }
+      if ((e.event || "").toLowerCase() === "archivecreated" && Array.isArray(e.args) && e.args.length > 0) {
+        archiveId = ethers.BigNumber.from(e.args[0]).toString();
+        break;
+      }
+    }
+    if (!archiveId) {
+      const nextId = await contract.nextId();
+      archiveId = ethers.BigNumber.from(nextId).sub(1).toString();
+    }
+    window.archiveId = archiveId;
+    resultBox.innerHTML += `归档编号: <b>${archiveId}</b><br>`;
+    for (let i = 0; i < chunks.length; i++) {
+      const chunk = toBytes(chunks[i]);
+      resultBox.innerHTML += `上传第${i+1}块（${chunk.length}字节）... `;
+      console.log(`准备上传第${i+1}块，字节：${chunk.length}`);
+      let gasEstimate = "未知";
+      try {
+        gasEstimate = await contract.estimateGas.uploadChunk(archiveId, i, chunk);
+      } catch (e) {
+        gasEstimate = `失败: ${e.message}`;
+      }
+      console.log(`第${i+1}块 预估gas: ${gasEstimate}`);
+      resultBox.innerHTML += `预估Gas: <b>${gasEstimate}</b><br>`;
+      const tx = await contract.uploadChunk(archiveId, i, chunk);
+      await tx.wait();
+      resultBox.innerHTML += `✅ 块${i+1}已上传<br>`;
+    }
+    resultBox.innerHTML += `<br>✅ 所有分块上传完成，编号：<b>${window.archiveId}</b>`;
+    return window.archiveId;
+  } catch (err) {
+    resultBox.innerHTML = "❌ 上传失败：" + (err.message || err);
+    console.error(err);
+    return null;
+  }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script>
+const FACTORY_ADDRESS = "0xFA75D42dfA62344340c0cCa2AB85a919dDF5d9cD";
+const FACTORY_ABI = [
+  "function createNFT(string name, string symbol, string description, string tags, address receiver, string archivePointer, uint256 amount) external returns (address)",
+  "event NewNFT(address indexed nft, address indexed creator, string tokenURI, uint256 totalMinted, string description, string tags)"
+];
+async function connectWalletNFT() {
+  if (!window.ethereum) {
+    alert("未检测到钱包，请安装 MetaMask");
+    return;
+  }
+  try {
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    document.getElementById("walletStatusNFT").style.display = "none";
+  } catch (err) {
+    alert("连接钱包失败: " + err.message);
+  }
+}
+function isValidEthAddress(address) {
+  return /^0x[a-fA-F0-9]{40}$/.test(address);
+}
+function isValidPointer(str) {
+  return /^0x[a-fA-F0-9]{40}\|\d+$/.test(str);
+}
+async function startMint(event) {
+  event.preventDefault();
+  const name = document.getElementById("NFTname").value.trim();
+  const symbol = document.getElementById("NFTsymbol").value.trim();
+  const description = document.getElementById("NFTdesc").value.trim();
+  const tags = document.getElementById("NFTtags").value.trim();
+  const receiver = document.getElementById("NFTreceiver").value.trim();
+  const archivePointer = document.getElementById("NFTURL").value.trim();
+  const amount = parseInt(document.getElementById("NFTnumber").value.trim());
+  const resultBox = document.getElementById("deployResult");
+  if (!name || !symbol || !description || !tags || !receiver || !archivePointer || isNaN(amount)) {
+    alert("请填写所有字段");
+    return;
+  }
+  if (!isValidEthAddress(receiver)) {
+    alert("接收地址格式无效");
+    return;
+  }
+  if (!isValidPointer(archivePointer)) {
+    alert("归档馆指针格式应为：合约地址|编号（如 0xabc...|3）");
+    return;
+  }
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const factory = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, signer);
+    resultBox.innerHTML = "🪙 正在发起交易...";
+    const tx = await factory.createNFT(name, symbol, description, tags, receiver, archivePointer, amount);
+    const receipt = await tx.wait();
+    const evt = receipt.events?.find(e => e.event === "NewNFT");
+    const nftAddr = evt?.args?.nft;
+    resultBox.innerHTML = `✅ NFT 铸造成功！<br>合约地址: <code>${nftAddr}</code>`;
+  } catch (err) {
+    console.error(err);
+    resultBox.innerHTML = "❌ 铸造失败：" + (err.reason || err.message || err);
   }
 }
 </script>
